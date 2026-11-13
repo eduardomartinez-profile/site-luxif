@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>LUXIF — Luxímetro de baixo custo</title>
+	<link rel="icon" href="icones/icone.png" type="image/png">
+	<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&amp;family=Roboto:wght@400;700&amp;display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="css/style.css">
+	<script src="js/tema.js"></script>
+</head>
+<body>
+	<header>
+		<div class="container">
+			<a href="index.html"><img class="logo" src="imagens/logo.svg" alt="LUXIF — página inicial"></a>
+			<nav>
+				<ul>
+					<li><a href="index.html" aria-current="page">Início</a></li>
+					<li><a href="paginas/funcionamento.html">Como funciona</a></li>
+					<li><a href="paginas/componentes.html">Componentes</a></li>
+					<li><a href="paginas/montagem.html">Monte o seu</a></li>
+					<li><a href="paginas/codigo.html">Código</a></li>
+					<li><a href="paginas/ao-vivo.html">Ao vivo</a></li>
+					<li><a href="paginas/documentacao.html">Documentação</a></li>
+				</ul>
+			</nav>
+			<div class="ferramentas">
+				<a class="indicador-luxif" href="paginas/ao-vivo.html" title="Leitura atual do LUXIF" hidden><span>— lx</span></a>
+				<div class="seletor-tema" role="group" aria-label="Tema do site">
+					<button type="button" data-escolha="claro" aria-pressed="false" aria-label="Tema claro" title="Tema claro"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></button>
+					<button type="button" data-escolha="auto" aria-pressed="true" aria-label="Tema automático" title="Automático: segue a luz medida pelo LUXIF"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 0 0 18z" fill="currentColor"/></svg></button>
+					<button type="button" data-escolha="escuro" aria-pressed="false" aria-label="Tema escuro" title="Tema escuro"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg></button>
+				</div>
+			</div>
+		</div>
+	</header>
+
+	<main>
+		<section class="abertura">
+			<div class="container">
+				<h1>LUXIF</h1>
+				<p class="subtitulo">Um luxímetro de baixo custo, feito com Arduino, que mede a luz e mostra o valor em lux num display.</p>
+				<p class="introducao">O LUXIF mede a iluminância, isto é, quanta luz chega a uma superfície, em lux. Ele usa um sensor de luz barato (LDR) e troca sozinho entre quatro faixas de medição para medir bem tanto na penumbra quanto em ambientes claros. A leitura aparece no display do aparelho e, na versão com ESP32, também aqui no site, em tempo real.</p>
+				<p>
+					<a class="botao" href="paginas/funcionamento.html">Como funciona</a>
+					<a class="botao secundario" href="paginas/montagem.html">Monte o seu</a>
+					<a class="botao secundario" href="paginas/ao-vivo.html">Ver ao vivo</a>
+					<a class="botao secundario" href="paginas/documentacao.html">Ler o artigo</a>
+				</p>
+			</div>
+		</section>
+
+		<section id="apresentacao">
+			<div class="container duas-colunas">
+				<div>
+					<h2>Apresentação</h2>
+					<h3>O problema</h3>
+					<p>Medir a intensidade da luz é a base de experimentos de óptica e do controle da iluminação de ambientes. Luxímetros comerciais são caros. Já o LDR, um sensor de luz que custa centavos, tem uma dificuldade: sua resistência varia demais, de algumas centenas de ohms na claridade a centenas de milhares de ohms no escuro. Com um circuito fixo, ele só mede bem uma pequena parte dessa variação.</p>
+					<h3>A solução</h3>
+					<p>O LUXIF combina o LDR com quatro resistores de referência (1 kΩ, 10 kΩ, 100 kΩ e 470 kΩ) e deixa o Arduino escolher qual usar a cada momento, como um multímetro que troca de escala sozinho. Um LED azul mostra a faixa em uso e o display OLED mostra o valor em lux. Na versão com ESP32, o Wi-Fi também envia as leituras para o computador ou o celular.</p>
+				</div>
+				<figure>
+					<img src="imagens/esquema-eletrico.png" alt="Esquema elétrico do LUXIF: Arduino Uno com o LDR, os quatro resistores de referência, os LEDs azuis, o display OLED e a alimentação por bateria de 9 V." width="1271" height="1043">
+					<figcaption>O circuito do LUXIF: o LDR e os resistores de referência medem a luz, os LEDs azuis indicam a faixa em uso e o display OLED mostra a leitura em lux.</figcaption>
+				</figure>
+			</div>
+		</section>
+
+		<section id="objetivos">
+			<div class="container">
+				<h2>Objetivos</h2>
+				<div class="grade">
+					<article class="cartao">
+						<h3>Medir uma faixa ampla de luz</h3>
+						<p>Da penumbra à luz do dia, o LUXIF tem alcance de 1 lux até 1000 lux.</p>
+					</article>
+					<article class="cartao">
+						<h3>Monitorar a luz natural</h3>
+						<p>Acompanhar como a luz do sol muda ao longo do dia, com leituras registradas a cada meio segundo.</p>
+					</article>
+					<article class="cartao">
+						<h3>Mostrar a luz ao vivo</h3>
+						<p>Na versão com ESP32, enviar as medições pelo Wi-Fi para o navegador, sem fios e sem instalar nenhum programa.</p>
+					</article>
+					<article class="cartao">
+						<h3>Ser aberto e replicável</h3>
+						<p>Código, esquema elétrico, lista de materiais e artigo publicados aqui, para quem quiser estudar o projeto ou montar o seu.</p>
+					</article>
+				</div>
+			</div>
+		</section>
+
+		<section id="aprenda">
+			<div class="container">
+				<h2>Aprenda montando</h2>
+				<p>O LUXIF também é um projeto para aprender. Ao montá-lo, você pratica divisor de tensão, leitura de sensores analógicos, comunicação I²C e troca automática de escala, conceitos de Física e Eletrônica que aparecem em muitos instrumentos.</p>
+				<div class="grade">
+					<article class="cartao">
+						<h3>1. Entenda</h3>
+						<p>Veja como a luz vira um número em <a href="paginas/funcionamento.html">Como funciona</a>.</p>
+					</article>
+					<article class="cartao">
+						<h3>2. Monte</h3>
+						<p>Siga o passo a passo em <a href="paginas/montagem.html">Monte o seu</a>, com testes a cada etapa.</p>
+					</article>
+					<article class="cartao">
+						<h3>3. Programe</h3>
+						<p>Grave o <a href="paginas/codigo.html">código</a> e leia, função por função, o que ele faz.</p>
+					</article>
+					<article class="cartao">
+						<h3>4. Experimente</h3>
+						<p>Meça a luz do dia, a distância de uma lâmpada e polarizadores, e acompanhe tudo <a href="paginas/ao-vivo.html">ao vivo</a>.</p>
+					</article>
+				</div>
+			</div>
+		</section>
+
+		<section id="equipe">
+			<div class="container">
+				<h2>Equipe</h2>
+				<div class="grade">
+					<article class="cartao">
+						<h3>Eduardo Luciano Martinez</h3>
+						<p>Gerência e organização do projeto; base teórica e definição dos objetivos de estudo.</p>
+					</article>
+					<article class="cartao">
+						<h3>Emily Oliveira Araujo</h3>
+						<p>Edição e revisão; validação das informações e das ferramentas matemáticas.</p>
+					</article>
+					<article class="cartao">
+						<h3>Henrique Ferreira Defavere</h3>
+						<p>Investigação e análise formal; levantamento de dados e ferramentas matemáticas e visuais.</p>
+					</article>
+					<article class="cartao">
+						<h3>Rafael Shiguemi Usui Ramos</h3>
+						<p>Investigação e análise formal; levantamento de dados e ferramentas matemáticas e visuais.</p>
+					</article>
+					<article class="cartao">
+						<h3>Vinícius Martins Pereira</h3>
+						<p>Servidor WebSocket em ESP-IDF para a comunicação do ESP32 com a página web.</p>
+					</article>
+				</div>
+				<p>Agradecimentos aos professores Dennis Toufen, Maurício Capelas, Hamilton Piva e Wilson Carlos.</p>
+			</div>
+		</section>
+	</main>
+
+	<footer>
+		<div class="container">
+			<p>&copy; 2026 LUXIF. Projeto integrador — IFSP Guarulhos.</p>
+		</div>
+	</footer>
+
+	<script src="js/luxif.js"></script>
+</body>
+</html>

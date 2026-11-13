@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Código — LUXIF</title>
+	<link rel="icon" href="../icones/icone.png" type="image/png">
+	<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&amp;family=Roboto:wght@400;700&amp;display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="../css/style.css">
+	<script src="../js/tema.js"></script>
+</head>
+<body>
+	<header>
+		<div class="container">
+			<a href="../index.html"><img class="logo" src="../imagens/logo.svg" alt="LUXIF — página inicial"></a>
+			<nav>
+				<ul>
+					<li><a href="../index.html">Início</a></li>
+					<li><a href="funcionamento.html">Como funciona</a></li>
+					<li><a href="componentes.html">Componentes</a></li>
+					<li><a href="montagem.html">Monte o seu</a></li>
+					<li><a href="codigo.html" aria-current="page">Código</a></li>
+					<li><a href="ao-vivo.html">Ao vivo</a></li>
+					<li><a href="documentacao.html">Documentação</a></li>
+				</ul>
+			</nav>
+			<div class="ferramentas">
+				<a class="indicador-luxif" href="ao-vivo.html" title="Leitura atual do LUXIF" hidden><span>— lx</span></a>
+				<div class="seletor-tema" role="group" aria-label="Tema do site">
+					<button type="button" data-escolha="claro" aria-pressed="false" aria-label="Tema claro" title="Tema claro"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></button>
+					<button type="button" data-escolha="auto" aria-pressed="true" aria-label="Tema automático" title="Automático: segue a luz medida pelo LUXIF"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 0 0 18z" fill="currentColor"/></svg></button>
+					<button type="button" data-escolha="escuro" aria-pressed="false" aria-label="Tema escuro" title="Tema escuro"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg></button>
+				</div>
+			</div>
+		</div>
+	</header>
+
+	<main>
+		<section>
+			<div class="container">
+				<h1>Código</h1>
+				<p class="introducao">O código roda no Arduino Uno: lê o LDR, troca de faixa sozinho, calcula o valor em lux e mostra no display.</p>
+				<p><a class="botao" href="../sketche/luxif/luxif.ino" download>Baixar o código</a></p>
+			</div>
+		</section>
+
+		<section id="como-gravar">
+			<div class="container duas-colunas">
+				<div>
+					<h2>Como gravar no Arduino</h2>
+					<ol>
+						<li>Instale a <a href="https://www.arduino.cc/en/software" target="_blank" rel="noopener">Arduino IDE</a>.</li>
+						<li>Abra o arquivo <code>luxif.ino</code> e escolha a placa <strong>Arduino Uno</strong> e a porta.</li>
+						<li>Clique em Carregar.</li>
+						<li>O valor em lux aparece no display. Ele também aparece no Monitor Serial, em 9600 baud.</li>
+					</ol>
+				</div>
+				<div>
+					<h2>Bibliotecas</h2>
+					<ul>
+						<li><strong>Adafruit SSD1306</strong>: controla o display OLED.</li>
+						<li><strong>Adafruit GFX</strong>: desenha textos e linhas no display.</li>
+					</ul>
+					<p>Instale as duas pelo Gerenciador de Bibliotecas da Arduino IDE. A biblioteca <strong>Wire</strong>, usada na comunicação com o display, já vem com a IDE.</p>
+				</div>
+			</div>
+		</section>
+
+		<section id="partes">
+			<div class="container">
+				<h2>Partes do código</h2>
+				<div class="tabela-rolagem">
+					<table>
+						<thead>
+							<tr><th>Função</th><th>O que faz</th></tr>
+						</thead>
+						<tbody>
+							<tr><td><code>setup()</code></td><td>Roda uma vez quando o Arduino liga: prepara os LEDs, escolhe a primeira faixa e liga o I2C (<code>Wire.begin()</code>) e o display; se o display não responder, avisa no Monitor Serial.</td></tr>
+							<tr><td><code>loop()</code></td><td>Roda sem parar: lê o sensor, troca de faixa se precisar e, se a leitura estiver boa, calcula e mostra o lux.</td></tr>
+							<tr><td><code>selecionarFaixa()</code></td><td>Liga o pino de uma faixa e o seu LED, e desliga os outros.</td></tr>
+							<tr><td><code>lerMedia()</code></td><td>Lê o pino A0 dez vezes e devolve a média, para diminuir o ruído.</td></tr>
+							<tr><td><code>calcularLux()</code></td><td>Calcula a resistência do LDR e a converte em lux pela curva do sensor.</td></tr>
+							<tr><td><code>atualizarOLED()</code></td><td>Escreve no display o valor em lux, a faixa em uso, a leitura bruta (ADC) e, no rodapé, as quatro faixas com a ativa entre colchetes.</td></tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="aviso">
+					<strong>A ideia principal:</strong> a cada volta do <code>loop()</code>, se a leitura passar de 920 (escuro demais para a faixa), o código pula para um resistor maior; se ficar abaixo de 100 (claro demais), pula para um menor. Só quando a leitura está entre os dois limites o valor em lux é calculado.
+				</div>
+			</div>
+		</section>
+
+		<section id="codigo-completo">
+			<div class="container">
+				<h2>Código completo</h2>
+				<pre><code>#include &lt;Wire.h&gt;
+#include &lt;Adafruit_GFX.h&gt;
+#include &lt;Adafruit_SSD1306.h&gt;
+
+// Configuração da OLED
+#define LARGURA_OLED 128
+#define ALTURA_OLED 64
+#define OLED_RESET -1
+#define OLED_ENDERECO 0x3C
+
+Adafruit_SSD1306 display(LARGURA_OLED, ALTURA_OLED, &amp;Wire, OLED_RESET);
+
+// Pinos
+const int PINO_LDR = A0;
+const int PINOS_FAIXA[4] = {2, 3, 4, 5};    // Pinos dos resistores de referência
+const int PINOS_LED[4] = {6, 7, 8, 9};      // Pinos dos LEDs indicadores de faixa
+
+// Faixas e Valores de Resistores
+const long RESISTORES[4] = {1000, 10000, 100000, 470000};
+const char* NOMES_FAIXA[4] = {"1k", "10k", "100k", "470k"};
+
+// Limites para troca automática de faixa (Auto-Range)
+const int LIMITE_ALTO = 920;
+const int LIMITE_BAIXO = 100;
+
+// Curva do LDR: R = A * lux^(-GAMA). Ajustar conforme calibração.
+const float A = 75000.0;
+const float GAMA = 0.7;
+
+int faixaAtual = 1;
+
+void selecionarFaixa(int novaFaixa) {
+  for (int i = 0; i &lt; 4; i++) {
+    pinMode(PINOS_FAIXA[i], INPUT);
+    digitalWrite(PINOS_LED[i], LOW);
+  }
+
+  faixaAtual = novaFaixa;
+  pinMode(PINOS_FAIXA[faixaAtual], OUTPUT);
+  digitalWrite(PINOS_FAIXA[faixaAtual], HIGH);
+  digitalWrite(PINOS_LED[faixaAtual], HIGH);
+  delay(10);
+}
+
+int lerMedia() {
+  long soma = 0;
+  for (int i = 0; i &lt; 10; i++) {
+    soma += analogRead(PINO_LDR);
+  }
+  return soma / 10;
+}
+
+float calcularLux(int leitura) {
+  if (leitura &gt;= 1023) return 0;
+  if (leitura &lt; 1) leitura = 1;
+
+  float resistenciaLdr = RESISTORES[faixaAtual] * (float) leitura / (1023.0 - (float)leitura);
+  return pow(A / resistenciaLdr, 1.0 / GAMA);
+}
+
+// Exibe os resultados na OLED
+void atualizarOLED(float lux, int leitura) {
+  display.clearDisplay();
+  display.setTextColor(SSD1306_WHITE);
+
+  // Título e Faixa
+  display.setTextSize(1);
+  display.setCursor(0, 0);
+  display.print(F("LUXIF - AUTO RANGE"));
+
+  display.drawLine(0, 10, 127, 10, SSD1306_WHITE);
+
+  // Status da Faixa Atual e ADC
+  display.setCursor(0, 14);
+  display.print(F("Faixa: "));
+  display.print(NOMES_FAIXA[faixaAtual]);
+  display.print(F(" | ADC: "));
+  display.print(leitura);
+
+  // Valor principal em Lux ou estado limite
+  display.setCursor(0, 28);
+  if (leitura &gt; LIMITE_ALTO &amp;&amp; faixaAtual == 3) {
+    display.setTextSize(2);
+    display.println(F("Mto Escuro"));
+  } else if (leitura &lt; LIMITE_BAIXO &amp;&amp; faixaAtual == 0) {
+    display.setTextSize(2);
+    display.println(F("Mto Claro"));
+  } else {
+    display.setTextSize(3);
+    display.print(lux, lux &lt; 10 ? 1 : 0);
+    display.setTextSize(1);
+    display.println(F(" lx"));
+  }
+
+  // Rodapé com indicadores visuais de faixa ativa
+  display.setTextSize(1);
+  display.setCursor(0, 54);
+  for (int i = 0; i &lt; 4; i++) {
+    if (i == faixaAtual) {
+      display.print(F("["));
+      display.print(NOMES_FAIXA[i]);
+      display.print(F("] "));
+    } else {
+      display.print(F(" "));
+      display.print(NOMES_FAIXA[i]);
+      display.print(F("  "));
+    }
+  }
+
+  display.display();
+}
+
+void setup() {
+  Serial.begin(9600);
+  
+  // INICIALIZAÇÃO OBRIGATÓRIA DO I2C PARA O OLED LIGAR
+  Wire.begin();
+
+  for (int i = 0; i &lt; 4; i++) {
+    pinMode(PINOS_LED[i], OUTPUT);
+  }
+  selecionarFaixa(faixaAtual);
+
+  // Inicializa o display OLED no endereço 0x3C
+  if (!display.begin(SSD1306_SWITCHCAPVCC, OLED_ENDERECO)) {
+    Serial.println(F("Falha ao iniciar OLED. Verifique as conexões ou o endereço (0x3C / 0x3D)."));
+    while (true) {
+      delay(100);
+    }
+  }
+
+  display.clearDisplay();
+  display.setTextColor(SSD1306_WHITE);
+  display.setTextSize(1);
+  display.setCursor(0, 20);
+  display.println(F("Inicializando LUXIF..."));
+  display.display();
+
+  delay(800);
+}
+
+void loop() {
+  int leitura = lerMedia();
+
+  // Leitura alta: escuro demais para esta faixa, usa resistor maior
+  if (leitura &gt; LIMITE_ALTO &amp;&amp; faixaAtual &lt; 3) {
+    selecionarFaixa(faixaAtual + 1);
+    return;
+  }
+
+  // Leitura baixa: claro demais para esta faixa, usa resistor menor
+  if (leitura &lt; LIMITE_BAIXO &amp;&amp; faixaAtual &gt; 0) {
+    selecionarFaixa(faixaAtual - 1);
+    return;
+  }
+
+  float lux = calcularLux(leitura);
+
+  // Atualiza a tela OLED
+  atualizarOLED(lux, leitura);
+
+  // Monitor Serial
+  Serial.print(F("Faixa: "));
+  Serial.print(NOMES_FAIXA[faixaAtual]);
+  Serial.print(F(" | ADC: "));
+  Serial.print(leitura);
+  Serial.print(F(" | Lux: "));
+  Serial.println(lux);
+
+  delay(200);
+}</code></pre>
+				<p><a class="botao secundario" href="../sketche/luxif/luxif.ino" download>Baixar o código</a></p>
+			</div>
+		</section>
+
+		<section id="versao-wifi">
+			<div class="container">
+				<h2>Versão com Wi-Fi (ESP32)</h2>
+				<p>Para usar a página <a href="ao-vivo.html">Ao vivo</a>, existe uma versão do código para o ESP32. Ela segue a mesma lógica, com estas diferenças:</p>
+				<ul>
+					<li>usa os pinos do ESP32 (veja a tabela em <a href="componentes.html#versao-wifi">Componentes</a>);</li>
+					<li>a leitura vai de 0 a 4095, então os limites passam a ser 400 e 3700; o rodapé do display mostra o endereço IP em vez das faixas;</li>
+					<li>conecta-se ao Wi-Fi e publica cada leitura, no formato <code>{"lux":523.4,"percentage":100,"faixa":1}</code>, num servidor MQTT público, de onde o site a recebe pela internet;</li>
+					<li>também aceita conexões direto pela rede local (WebSocket em <code>ws://IP/ws</code>, porta 80, o mesmo endereço do servidor ESP-IDF do Vinícius), para usar sem internet. O site envia a mensagem <code>conectado</code> ao abrir a conexão, como o servidor dele espera.</li>
+				</ul>
+				<p>Para gravar, instale a placa <strong>esp32</strong> (da Espressif Systems) no Gerenciador de Placas e, no Gerenciador de Bibliotecas, as bibliotecas <strong>PubSubClient</strong>, de Nick O'Leary (MQTT), e <strong>WebSockets</strong>, de Markus Sattler (rede local), além das duas do display. Antes de carregar, troque <code>nome-da-rede</code> e <code>senha-da-rede</code> pelos dados do seu Wi-Fi.</p>
+				<p><a class="botao secundario" href="../sketche/luxif_wifi/luxif_wifi.ino" download>Baixar a versão com Wi-Fi</a></p>
+			</div>
+		</section>
+	</main>
+
+	<footer>
+		<div class="container">
+			<p>&copy; 2026 LUXIF. Projeto integrador — IFSP Guarulhos.</p>
+		</div>
+	</footer>
+
+	<script src="../js/luxif.js"></script>
+</body>
+</html>

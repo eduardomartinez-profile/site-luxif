@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Monte o seu — LUXIF</title>
+	<link rel="icon" href="../icones/icone.png" type="image/png">
+	<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&amp;family=Roboto:wght@400;700&amp;display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="../css/style.css">
+	<script src="../js/tema.js"></script>
+</head>
+<body>
+	<header>
+		<div class="container">
+			<a href="../index.html"><img class="logo" src="../imagens/logo.svg" alt="LUXIF — página inicial"></a>
+			<nav>
+				<ul>
+					<li><a href="../index.html">Início</a></li>
+					<li><a href="funcionamento.html">Como funciona</a></li>
+					<li><a href="componentes.html">Componentes</a></li>
+					<li><a href="montagem.html" aria-current="page">Monte o seu</a></li>
+					<li><a href="codigo.html">Código</a></li>
+					<li><a href="ao-vivo.html">Ao vivo</a></li>
+					<li><a href="documentacao.html">Documentação</a></li>
+				</ul>
+			</nav>
+			<div class="ferramentas">
+				<a class="indicador-luxif" href="ao-vivo.html" title="Leitura atual do LUXIF" hidden><span>— lx</span></a>
+				<div class="seletor-tema" role="group" aria-label="Tema do site">
+					<button type="button" data-escolha="claro" aria-pressed="false" aria-label="Tema claro" title="Tema claro"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></button>
+					<button type="button" data-escolha="auto" aria-pressed="true" aria-label="Tema automático" title="Automático: segue a luz medida pelo LUXIF"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 0 0 18z" fill="currentColor"/></svg></button>
+					<button type="button" data-escolha="escuro" aria-pressed="false" aria-label="Tema escuro" title="Tema escuro"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg></button>
+				</div>
+			</div>
+		</div>
+	</header>
+
+	<main>
+		<section>
+			<div class="container">
+				<h1>Monte o seu LUXIF</h1>
+				<p class="introducao">Um guia passo a passo para montar, gravar e testar o seu luxímetro, explicando o porquê de cada ligação. Ao final, você terá um instrumento funcionando e terá praticado conceitos de Física e Eletrônica.</p>
+				<p>
+					<a class="botao" href="#passos">Ir para a montagem</a>
+					<a class="botao secundario" href="componentes.html#materiais">Lista de materiais</a>
+				</p>
+			</div>
+		</section>
+
+		<section id="aprender">
+			<div class="container">
+				<h2>O que você vai aprender</h2>
+				<div class="grade">
+					<article class="cartao">
+						<h3>Divisor de tensão</h3>
+						<p>Como dois resistores dividem a tensão e por que o LDR, com sua resistência variável, transforma luz em tensão.</p>
+					</article>
+					<article class="cartao">
+						<h3>Leitura analógica</h3>
+						<p>Como o conversor analógico-digital do Arduino transforma uma tensão de 0 a 5 V em um número de 0 a 1023.</p>
+					</article>
+					<article class="cartao">
+						<h3>Troca de escala</h3>
+						<p>Como o programa decide, sozinho, qual resistor usar, como um multímetro com escala automática.</p>
+					</article>
+					<article class="cartao">
+						<h3>Display e Wi-Fi</h3>
+						<p>Como falar com um display pelo barramento I²C e, na versão com ESP32, enviar as leituras para o navegador.</p>
+					</article>
+				</div>
+			</div>
+		</section>
+
+		<section id="antes">
+			<div class="container duas-colunas">
+				<div>
+					<h2>Antes de começar</h2>
+					<ul>
+						<li>Separe os componentes da <a href="componentes.html#materiais">lista de materiais</a>.</li>
+						<li>Instale a <a href="https://www.arduino.cc/en/software" target="_blank" rel="noopener">Arduino IDE</a> no computador.</li>
+						<li>Monte primeiro numa protoboard. Só depois de tudo funcionar, passe para a placa perfurada e solde.</li>
+						<li>Durante os testes, alimente o Arduino pelo cabo USB. A bateria entra só no último passo.</li>
+						<li>Um multímetro ajuda bastante, mas não é obrigatório.</li>
+					</ul>
+				</div>
+				<div class="aviso">
+					<strong>Regra de ouro:</strong> desligue o Arduino da USB e da bateria antes de mudar qualquer fio. Confira a ligação com o <a href="componentes.html#esquema">esquema elétrico</a> antes de ligar de novo.
+				</div>
+			</div>
+		</section>
+
+		<section id="passos">
+			<div class="container">
+				<h2>Passo a passo</h2>
+
+				<h3>Passo 1 — Os resistores de referência (D2 a D5)</h3>
+				<p><strong>O que fazer:</strong> ligue um terminal de cada resistor (1 kΩ, 10 kΩ, 100 kΩ e 470 kΩ) a um pino digital do Arduino, na ordem: 1 kΩ no D2, 10 kΩ no D3, 100 kΩ no D4 e 470 kΩ no D5. Una os outros quatro terminais num mesmo ponto da protoboard. Esse é o <em>ponto do divisor</em>.</p>
+				<p><strong>Por quê:</strong> o programa liga só um dos quatro pinos (5 V) de cada vez. Os outros três ficam configurados como entrada, o que na prática desconecta os resistores deles. Assim, o LDR sempre forma o divisor de tensão com um único resistor, o escolhido.</p>
+
+				<h3>Passo 2 — O LDR e a entrada A0</h3>
+				<p><strong>O que fazer:</strong> ligue o LDR entre o ponto do divisor e o GND. Ligue também o ponto do divisor ao pino A0. O LDR não tem polaridade, então qualquer terminal serve.</p>
+				<p><strong>Por quê:</strong> a tensão no ponto do divisor é <em>V = 5 V × R<sub>LDR</sub> ÷ (R<sub>n</sub> + R<sub>LDR</sub>)</em>. Com muita luz, R<sub>LDR</sub> cai e a tensão cai; no escuro, R<sub>LDR</sub> sobe e a tensão sobe. O Arduino lê essa tensão em A0. A explicação completa está em <a href="funcionamento.html#circuito">Como funciona</a>.</p>
+
+				<h3>Passo 3 — Os LEDs azuis (D6 a D9)</h3>
+				<p><strong>O que fazer:</strong> ligue cada LED azul a um pino, do D6 ao D9, com um resistor de 1 kΩ em série, e leve a outra ponta ao GND. A perna maior do LED (o ânodo) fica do lado do pino.</p>
+				<p><strong>Por quê:</strong> o resistor limita a corrente do LED. Sem ele, o LED puxaria corrente demais e poderia queimar, junto com o pino. Os LEDs ficam em pinos próprios, fora do divisor, para que a queda de tensão deles não atrapalhe a medição.</p>
+
+				<h3>Passo 4 — O display OLED</h3>
+				<p><strong>O que fazer:</strong> ligue o GND do display ao GND do Arduino, o VCC ao 5V, o SDA ao A4 e o SCL ao A5.</p>
+				<p><strong>Por quê:</strong> o display conversa com o Arduino pelo barramento I²C, que usa só dois fios: SDA (dados) e SCL (relógio). No Arduino Uno, eles ficam em A4 e A5.</p>
+
+				<h3>Passo 5 — Gravar o código</h3>
+				<ol>
+					<li>Abra a Arduino IDE e instale as bibliotecas <strong>Adafruit SSD1306</strong> e <strong>Adafruit GFX</strong> pelo Gerenciador de Bibliotecas.</li>
+					<li>Abra o arquivo <code>luxif.ino</code> (baixe na página <a href="codigo.html">Código</a>).</li>
+					<li>Escolha a placa <strong>Arduino Uno</strong> e a porta serial, e clique em Carregar.</li>
+					<li>Abra o Monitor Serial a 9600 baud. A cada leitura aparecem a faixa, o valor lido (ADC) e o lux.</li>
+				</ol>
+
+				<h3>Passo 6 — Testar</h3>
+				<ol>
+					<li>Com o ambiente normal, o display deve mostrar um valor em lux e a faixa em uso, com o LED azul correspondente aceso.</li>
+					<li>Cubra o LDR com a mão. O valor cai, e o LED aceso pode mudar para uma faixa de resistor maior (como 100k ou 470k). No escuro total, o display mostra "Mto Escuro".</li>
+					<li>Aponte a lanterna do celular para o LDR. O valor sobe, e o LED muda para uma faixa de resistor menor. Na luz muito forte, o display mostra "Mto Claro".</li>
+				</ol>
+				<p><strong>Para pensar:</strong> por que a faixa muda quando a leitura passa de 920 ou fica abaixo de 100? Relacione esses números com as tensões de 4,5 V e 0,5 V e com a forma das curvas da <a href="funcionamento.html#circuito">Figura 2</a>.</p>
+
+				<h3>Passo 7 — Alimentação por bateria</h3>
+				<p><strong>O que fazer:</strong> ligue o polo positivo da bateria de 9 V à chave gangorra e a saída da chave ao polo positivo do conector de energia do Arduino (use um cabo com plugue P4). Ligue o polo negativo ao negativo do conector. Em paralelo com a saída da chave, ligue o LED vermelho com um resistor de 1 kΩ até o GND, para indicar que o circuito está ligado.</p>
+				<p><strong>Por quê:</strong> o regulador interno do Arduino aceita de 7 a 12 V no conector de energia e fornece os 5 V que o circuito usa. O LED vermelho fica em paralelo com a alimentação, e não em série, para que ele não limite a corrente do circuito. Depois de testar tudo com a bateria, solde os componentes na placa perfurada e teste de novo.</p>
+
+				<div class="aviso">
+					<strong>Atenção:</strong> confira a polaridade da bateria antes de ligar o conector. O positivo da bateria vai à chave e ao polo positivo do conector, e o negativo ao polo negativo.
+				</div>
+			</div>
+		</section>
+
+		<section id="problemas">
+			<div class="container">
+				<h2>Se alguma coisa não funcionar</h2>
+				<details>
+					<summary>O display não acende</summary>
+					<p>Confira o GND e o 5V do display e se SDA e SCL não estão trocados (SDA no A4, SCL no A5). Abra o Monitor Serial: se aparecer "Falha ao iniciar OLED", o Arduino não achou o display. Alguns módulos usam o endereço 0x3D em vez de 0x3C; nesse caso, troque <code>OLED_ENDERECO</code> no código.</p>
+				</details>
+				<details>
+					<summary>O display mostra sempre "Mto Escuro"</summary>
+					<p>A leitura está no máximo, o que acontece quando o LDR não está ligado ao ponto do divisor ou ao GND. Verifique o contato dos dois terminais do LDR.</p>
+				</details>
+				<details>
+					<summary>O display mostra sempre "Mto Claro"</summary>
+					<p>A leitura está perto de zero. Confira se o ponto do divisor não está em curto com o GND e se os resistores estão nos pinos D2 a D5 certos.</p>
+				</details>
+				<details>
+					<summary>Nenhum LED azul acende</summary>
+					<p>Verifique a polaridade (a perna maior do LED vai do lado do pino) e se o resistor de 1 kΩ está em série com cada LED. Depois confira se o outro terminal está no GND.</p>
+				</details>
+				<details>
+					<summary>O valor oscila muito</summary>
+					<p>Quase sempre é mau contato. Reencaixe os jumpers do ponto do divisor e do LDR. Lâmpadas de LED e fluorescentes também piscam numa frequência alta, e isso pode variar a leitura um pouco.</p>
+				</details>
+				<details>
+					<summary>O valor em lux é diferente do de outro luxímetro</summary>
+					<p>Os LDRs variam de um para outro. Ajuste as constantes <code>A</code> e <code>GAMA</code> no código para o seu sensor, como explicado em <a href="funcionamento.html#alcance">Como funciona</a>.</p>
+				</details>
+			</div>
+		</section>
+
+		<section id="experimentos">
+			<div class="container">
+				<h2>Experimentos para fazer</h2>
+				<div class="grade">
+					<article class="cartao">
+						<h3>A luz ao longo do dia</h3>
+						<p>Deixe o LUXIF perto de uma janela e acompanhe, na página <a href="ao-vivo.html">Ao vivo</a>, como a iluminância muda do amanhecer ao anoitecer.</p>
+					</article>
+					<article class="cartao">
+						<h3>Distância da lâmpada</h3>
+						<p>Meça a luz de uma lâmpada a 20, 40 e 80 cm, num quarto escuro. Em uma fonte pontual, a iluminância cai com o quadrado da distância (1/d²). Os seus dados confirmam isso?</p>
+					</article>
+					<article class="cartao">
+						<h3>Polarizadores</h3>
+						<p>Coloque dois filtros polarizadores entre uma luz e o sensor e gire um deles. A intensidade segue a lei de Malus: I = I<sub>0</sub> cos²θ. Faça um gráfico de lux por ângulo.</p>
+					</article>
+					<article class="cartao">
+						<h3>Tema que reage à luz</h3>
+						<p>Com o LUXIF conectado, escolha o tema Auto do site e cubra o sensor: o site escurece abaixo de 50 lux e clareia acima de 100.</p>
+					</article>
+				</div>
+			</div>
+		</section>
+
+		<section id="esp32">
+			<div class="container">
+				<h2>Montando a versão com Wi-Fi (ESP32)</h2>
+				<ol>
+					<li>Faça as mesmas ligações dos passos 1 a 4, usando os pinos do ESP32 da tabela em <a href="componentes.html#versao-wifi">Componentes</a>. O display usa 3V3 em vez de 5V.</li>
+					<li>Na Arduino IDE, instale a placa <strong>esp32</strong> e as bibliotecas <strong>PubSubClient</strong> e <strong>WebSockets</strong>, além das do display.</li>
+					<li>No arquivo <code>luxif_wifi.ino</code>, troque <code>nome-da-rede</code> e <code>senha-da-rede</code> pelos dados do seu Wi-Fi de 2,4 GHz. Não publique esse arquivo com a senha preenchida.</li>
+					<li>Grave o código. No display, o rodapé mostra o endereço IP do ESP32 e a palavra "web" quando ele está conectado ao servidor MQTT.</li>
+					<li>Abra a página <a href="ao-vivo.html">Ao vivo</a> e conecte-se, pela internet ou pelo endereço IP, como explicado lá.</li>
+				</ol>
+			</div>
+		</section>
+
+		<section id="em-aula">
+			<div class="container">
+				<h2>Para usar em aula</h2>
+				<p>O LUXIF funciona bem como atividade de laboratório. Algumas perguntas para discutir durante a montagem, que ficam melhores quando os alunos tentam responder antes de olhar a explicação:</p>
+				<ul>
+					<li>Por que um LDR sozinho, com um único resistor fixo, mede mal uma faixa grande de luz?</li>
+					<li>O que aconteceria se dois pinos de D2 a D5 ficassem em nível alto ao mesmo tempo?</li>
+					<li>Por que os LEDs azuis ficam fora do divisor de tensão?</li>
+					<li>Por que usar 10 leituras e tirar a média em vez de uma só?</li>
+					<li>No gráfico de resistência do LDR em escala logarítmica, por que a curva é uma reta?</li>
+				</ul>
+				<p>As respostas estão nas páginas <a href="funcionamento.html">Como funciona</a> e <a href="codigo.html">Código</a> e no <a href="documentacao.html">artigo</a>.</p>
+			</div>
+		</section>
+	</main>
+
+	<footer>
+		<div class="container">
+			<p>&copy; 2026 LUXIF. Projeto integrador — IFSP Guarulhos.</p>
+		</div>
+	</footer>
+
+	<script src="../js/luxif.js"></script>
+</body>
+</html>

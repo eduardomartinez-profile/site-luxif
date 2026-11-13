@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Componentes — LUXIF</title>
+	<link rel="icon" href="../icones/icone.png" type="image/png">
+	<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&amp;family=Roboto:wght@400;700&amp;display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="../css/style.css">
+	<script src="../js/tema.js"></script>
+</head>
+<body>
+	<header>
+		<div class="container">
+			<a href="../index.html"><img class="logo" src="../imagens/logo.svg" alt="LUXIF — página inicial"></a>
+			<nav>
+				<ul>
+					<li><a href="../index.html">Início</a></li>
+					<li><a href="funcionamento.html">Como funciona</a></li>
+					<li><a href="componentes.html" aria-current="page">Componentes</a></li>
+					<li><a href="montagem.html">Monte o seu</a></li>
+					<li><a href="codigo.html">Código</a></li>
+					<li><a href="ao-vivo.html">Ao vivo</a></li>
+					<li><a href="documentacao.html">Documentação</a></li>
+				</ul>
+			</nav>
+			<div class="ferramentas">
+				<a class="indicador-luxif" href="ao-vivo.html" title="Leitura atual do LUXIF" hidden><span>— lx</span></a>
+				<div class="seletor-tema" role="group" aria-label="Tema do site">
+					<button type="button" data-escolha="claro" aria-pressed="false" aria-label="Tema claro" title="Tema claro"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></button>
+					<button type="button" data-escolha="auto" aria-pressed="true" aria-label="Tema automático" title="Automático: segue a luz medida pelo LUXIF"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 0 0 18z" fill="currentColor"/></svg></button>
+					<button type="button" data-escolha="escuro" aria-pressed="false" aria-label="Tema escuro" title="Tema escuro"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg></button>
+				</div>
+			</div>
+		</div>
+	</header>
+
+	<main>
+		<section>
+			<div class="container">
+				<h1>Componentes</h1>
+				<p class="introducao">Lista de componentes e explicação de como montar o seu próprio LUXIF!</p>
+			</div>
+		</section>
+
+		<section id="materiais">
+			<div class="container">
+				<h2>Lista de materiais</h2>
+				<div class="tabela-rolagem">
+					<table>
+						<thead>
+							<tr><th>Componente</th><th>Qtd.</th><th>Função</th><th>Observação</th></tr>
+						</thead>
+						<tbody>
+							<tr><td>Arduino Uno</td><td>1</td><td>Trocar as faixas, ler o sensor e calcular o lux</td><td>Para a versão com Wi-Fi, use um ESP32 (veja abaixo)</td></tr>
+							<tr><td>LDR 10 mm</td><td>1</td><td>Mudar a resistência conforme a luz</td><td>Pode ser substituído por um LDR de 5 mm</td></tr>
+							<tr><td>Resistor de 1 kΩ</td><td>1</td><td>Referência da faixa de muita luz</td><td>—</td></tr>
+							<tr><td>Resistor de 10 kΩ</td><td>1</td><td>Referência da segunda faixa</td><td>—</td></tr>
+							<tr><td>Resistor de 100 kΩ</td><td>1</td><td>Referência da terceira faixa</td><td>—</td></tr>
+							<tr><td>Resistor de 470 kΩ</td><td>1</td><td>Referência da faixa de pouca luz</td><td>—</td></tr>
+							<tr><td>LED azul</td><td>4</td><td>Indicar visualmente qual faixa está sendo utilizada</td><td>Pode ser substituído por qualquer outra cor</td></tr>
+							<tr><td>Resistor de 1 kΩ</td><td>4</td><td>Limitar a corrente de cada LED azul</td><td>—</td></tr>
+							<tr><td>Display OLED 0,96" (SSD1306, I²C)</td><td>1</td><td>Mostrar a leitura em lux e a faixa em uso</td><td>—</td></tr>
+							<tr><td>Bateria 9 V</td><td>1</td><td>Alimentar o circuito quando não estiver conectado ao computador</td><td>—</td></tr>
+							<tr><td>Holder de bateria 9 V</td><td>1</td><td>Segurar a bateria</td><td>—</td></tr>
+							<tr><td>Cabo com plugue P4 para bateria 9 V</td><td>1</td><td>Ligar a bateria ao conector de energia do Arduino</td><td>—</td></tr>
+							<tr><td>Chave gangorra</td><td>1</td><td>Ligar e desligar o circuito</td><td>—</td></tr>
+							<tr><td>LED vermelho</td><td>1</td><td>Indicar que o circuito está ligado</td><td>Pode ser substituído por qualquer outra cor</td></tr>
+							<tr><td>Resistor de 1 kΩ</td><td>1</td><td>Limitar a corrente do LED vermelho</td><td>—</td></tr>
+							<tr><td>Placa perfurada de fibra de vidro</td><td>1</td><td>Base para soldar os componentes</td><td>Pode ser substituída por uma protoboard</td></tr>
+							<tr><td>Jumpers macho-macho</td><td>Vários</td><td>Realizar as ligações</td><td>A quantidade depende da disposição na placa</td></tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</section>
+
+		<section id="esquema">
+			<div class="container">
+				<h2>Esquema elétrico</h2>
+				<figure>
+					<img src="../imagens/esquema-eletrico.png" alt="Esquema elétrico do LUXIF: as saídas D2 a D5 do Arduino Uno ligam, cada uma, um resistor de referência (1 kΩ, 10 kΩ, 100 kΩ e 470 kΩ) ao ponto comum, que vai à entrada A0 e ao LDR; as saídas D6 a D9 ligam os LEDs azuis, cada um em série com um resistor de 1 kΩ até o GND; a bateria de 9 V passa pela chave e chega ao conector de energia, com o LED vermelho e seu resistor em paralelo; o display OLED usa 5V, GND, A4 (SDA) e A5 (SCL)." width="1271" height="1043">
+					<figcaption>Os LEDs azuis ficam em saídas próprias (D6 a D9), fora do divisor de tensão, para não interferir na medição. O LED vermelho fica em paralelo com a alimentação, com seu próprio resistor. O display usa 5V e GND para a alimentação, A4 para o SDA e A5 para o SCL.</figcaption>
+				</figure>
+			</div>
+		</section>
+
+		<section id="ligacoes">
+			<div class="container">
+				<h2>Ligações pino a pino</h2>
+				<div class="tabela-rolagem">
+					<table>
+						<thead>
+							<tr><th>De</th><th>Para</th></tr>
+						</thead>
+						<tbody>
+							<tr><td>Bateria (+)</td><td>Chave gangorra → polo positivo do conector de energia do Arduino</td></tr>
+							<tr><td>Bateria (−)</td><td>Polo negativo do conector de energia do Arduino (ligado ao GND)</td></tr>
+							<tr><td>Saída da chave</td><td>LED vermelho → resistor de 1 kΩ → GND</td></tr>
+							<tr><td>D2</td><td>Resistor de 1 kΩ → ponto do divisor</td></tr>
+							<tr><td>D3</td><td>Resistor de 10 kΩ → ponto do divisor</td></tr>
+							<tr><td>D4</td><td>Resistor de 100 kΩ → ponto do divisor</td></tr>
+							<tr><td>D5</td><td>Resistor de 470 kΩ → ponto do divisor</td></tr>
+							<tr><td>Ponto do divisor</td><td>A0 e um terminal do LDR</td></tr>
+							<tr><td>Outro terminal do LDR</td><td>GND</td></tr>
+							<tr><td>D6, D7, D8 e D9</td><td>LED azul → resistor de 1 kΩ → GND (um conjunto por pino)</td></tr>
+							<tr><td>Display OLED SDA / SCL</td><td>A4 / A5</td></tr>
+							<tr><td>Display OLED VCC / GND</td><td>5V / GND do Arduino</td></tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</section>
+
+		<section id="montagem">
+			<div class="container">
+				<h2>Como montar</h2>
+				<p>O passo a passo completo, com o motivo de cada ligação, os testes de cada etapa e as soluções para os problemas mais comuns, está na página <a href="montagem.html">Monte o seu</a>.</p>
+				<div class="aviso">
+					<strong>Cuidado:</strong> cada LED precisa do seu resistor. Ligado direto no pino, o LED puxa corrente demais e pode queimar, junto com a saída do Arduino.
+				</div>
+			</div>
+		</section>
+
+		<section id="versao-wifi">
+			<div class="container">
+				<h2>Versão com Wi-Fi (ESP32)</h2>
+				<p>Para acompanhar as leituras na página <a href="ao-vivo.html">Ao vivo</a>, troque o Arduino Uno por um ESP32. O circuito é o mesmo; mudam só os pinos:</p>
+				<div class="tabela-rolagem">
+					<table>
+						<thead>
+							<tr><th>Ligação</th><th>Arduino Uno</th><th>ESP32</th></tr>
+						</thead>
+						<tbody>
+							<tr><td>Resistores de 1 kΩ, 10 kΩ, 100 kΩ e 470 kΩ</td><td>D2, D3, D4, D5</td><td>GPIO 25, 26, 27, 14</td></tr>
+							<tr><td>LEDs azuis</td><td>D6, D7, D8, D9</td><td>GPIO 16, 17, 18, 19</td></tr>
+							<tr><td>Ponto do divisor</td><td>A0</td><td>GPIO 34</td></tr>
+							<tr><td>Display OLED SDA / SCL</td><td>A4 / A5</td><td>GPIO 21 / GPIO 22</td></tr>
+							<tr><td>Display OLED VCC</td><td>5V</td><td>3V3</td></tr>
+						</tbody>
+					</table>
+				</div>
+				<p>No ESP32, o ponto do divisor precisa ficar num pino entre o GPIO 32 e o 39: os outros pinos analógicos deixam de funcionar quando o Wi-Fi está ligado.</p>
+				<p>Como o ESP32 trabalha com 3,3 V, os LEDs azuis brilham menos do que no Arduino. Se ficarem fracos, troque os resistores deles por valores menores (por exemplo, 330 Ω).</p>
+			</div>
+		</section>
+	</main>
+
+	<footer>
+		<div class="container">
+			<p>&copy; 2026 LUXIF. Projeto integrador — IFSP Guarulhos.</p>
+		</div>
+	</footer>
+
+	<script src="../js/luxif.js"></script>
+</body>
+</html>
